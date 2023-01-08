@@ -38,6 +38,7 @@ public interface TbPedigreeMapper {
             "id," +
             "pedigree_name," +
             "create_time," +
+            "update_time," +
             "is_delete," +
             "country_id," +
             "pedigree_desc," +
