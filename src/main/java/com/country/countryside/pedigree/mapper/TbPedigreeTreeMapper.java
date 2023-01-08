@@ -83,6 +83,7 @@ public interface TbPedigreeTreeMapper {
             "<if test='pedigreeId != null and pedigreeId != &apos;&apos;'> pedigree_id = #{pedigreeId},</if>" +
             "<if test='wifeId != null and wifeId != &apos;&apos;'> wife_id = #{wifeId},</if>" +
             "<if test='layer != null and layer != &apos;&apos;'> layer = #{layer},</if>" +
+            " id = #{id} " +
             "where id = #{id}" +
             "</script>")
     void updatePedigreeTree(TbPedigreeTree tbPedigreeTree);

@@ -90,7 +90,8 @@ public interface TbRegionTreeMapper {
             "<if test='isLeaf != null'> is_leaf = #{isLeaf},</if>" +
             "<if test='updateTime != null and updateTime != &apos;&apos;'> update_time = #{updateTime},</if>" +
             "<if test='parentId != null and parentId != &apos;&apos;'> parent_id = #{parentId},</if>" +
-            "<if test='regionCode != null and regionCode != &apos;&apos;'> region_code = #{regionCode}</if>" +
+            "<if test='regionCode != null and regionCode != &apos;&apos;'> region_code = #{regionCode},</if>" +
+            " id = #{id} " +
             " where id = #{id}" +
             "</script>")
     void updateRegion(TbRegionTree tbRegionTree);

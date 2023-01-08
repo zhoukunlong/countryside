@@ -71,6 +71,7 @@ public interface TbPedigreeMapper {
             "<if test='isDelete != null'> region_name = #{is_delete},</if>" +
             "<if test='pedigreeDesc != null and pedigreeDesc != &apos;&apos;'> pedigree_desc = #{pedigreeDesc},</if>" +
             "<if test='pedigreeDesc != null and pedigreeDesc != &apos;&apos;'> pedigree_img = #{pedigreeDesc},</if>" +
+            " id = #{id} " +
             "where id = #{id}" +
             "</script>")
     void updatePedigree(TbPedigree tbPedigree);

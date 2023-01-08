@@ -4,7 +4,20 @@ import java.text.SimpleDateFormat;
 
 public class CommonConstants {
 
+    /**
+     * 时间格式化
+     */
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+
+    /**
+     * 默认用户密码
+     */
+    public static final String DEFAULT_PASSWORD = "123456";
+
+    /**
+     * 默认申请内容
+     */
+    public static final String CONTENT = "申请加入";
 
     public interface Delete{
         /**
@@ -28,5 +41,36 @@ public class CommonConstants {
          * 否
          */
         Integer NO = 0;
+    }
+
+    public interface UserResource{
+
+        /**
+         * 注册
+         */
+        Integer REGIST = 0;
+
+        /**
+         * 他人添加
+         */
+        Integer ADD = 1;
+    }
+
+    public interface ProcessStatus{
+
+        /**
+         * 审核中
+         */
+        Integer PROCESSING = 0;
+
+        /**
+         * 审核通过
+         */
+        Integer PASS = 1;
+
+        /**
+         * 审核不通过
+         */
+        Integer NOTPASS = 2;
     }
 }

@@ -4,7 +4,19 @@ import org.springframework.util.StringUtils;
 
 public enum ErrorCodeEnum {
 
-    ERROR_0xbdc10001("0xbdc10001", "参数错误","Parameter error");
+    //公共部分
+    ERROR_0xbdc10001("0xbdc10001", "参数错误","Parameter error"),
+
+    //村庄
+    ERROR_0xbdc20001("0xbdc20001", "申请加入的村庄不存在","countryside is not exist"),
+    ERROR_0xbdc20002("0xbdc20002", "申请工单不存在或已被撤回","the order is not exist"),
+
+    //用户
+    ERROR_0xbdc30001("0xbdc30001", "用户已在其他村庄，需要先退出再申请","Parameter error"),
+
+    //族谱
+    ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error")
+    ;
 
     private String code;
     //	记录到日志的信息

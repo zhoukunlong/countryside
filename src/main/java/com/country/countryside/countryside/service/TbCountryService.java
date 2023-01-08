@@ -12,4 +12,17 @@ public interface TbCountryService {
      * @param inVo
      */
     void addCountry(CountryInVo inVo);
+
+    /**
+     * 申请加入村庄
+     * @param userId
+     * @param countryId
+     */
+    void joinCountry(String userId, String countryId);
+
+    /**
+     * 审批工单
+     * @param id
+     */
+    void approve(String id, Integer status);
 }

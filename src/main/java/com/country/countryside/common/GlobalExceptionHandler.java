@@ -24,6 +24,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = DescribeException.class)
     public BaseResult handler(DescribeException e){
-        return BaseResult.fail(e.getCode(), e.getMessage(),e.getMessage());
+        return BaseResult.fail(e.getCode(), e.getMessage(),null);
     }
 }
