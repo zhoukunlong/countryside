@@ -1,15 +1,20 @@
 package com.country.countryside.countryside.controller;
 
 import com.country.countryside.common.BaseResult;
+import com.country.countryside.common.CommonUtils;
+import com.country.countryside.config.enums.ErrorCodeEnum;
 import com.country.countryside.countryside.service.TbCountryService;
 import com.country.countryside.countryside.vo.CountryInVo;
+import com.country.countryside.exception.DescribeException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -37,23 +42,25 @@ public class TbCountryController {
     @ApiOperation(value = "村庄添加接口", notes = "添加村庄信息")
     @RequestMapping(value = "/addCountry.do", method = RequestMethod.POST)
     public BaseResult addCountry(HttpServletRequest request, @Validated @RequestBody CountryInVo inVo){
-        tbCountryService.addCountry(inVo);
+        tbCountryService.addCountry(request,inVo);
         return BaseResult.success(null);
     }
 
     /**
      * 用户申请加入村庄
      * @param request
-     * @param userId
      * @param countryId
      * @return
      */
+    @ApiOperation(value = "申请加入村庄接口", notes = "用户可以根据自身需求申请加入某个村庄，等待该村管理员审批")
     @RequestMapping(value = "/joinCountry.do", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResult joinCountry(HttpServletRequest request, @NotBlank(message = "用户id不能为空") String userId,
-                                  @NotBlank(message = "村庄id不能为空") String countryId){
-        tbCountryService.joinCountry(userId,countryId);
-        return BaseResult.success(null);
+    public BaseResult joinCountry(HttpServletRequest request, @NotBlank(message = "村庄id不能为空") String countryId){
+        String userId = CommonUtils.getUserId(request);
+        if(StringUtils.isBlank(userId)){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30002.getCode(),ErrorCodeEnum.ERROR_0xbdc30002.getTips());
+        }
+        return BaseResult.success(tbCountryService.joinCountry(userId,countryId));
     }
 
     /**
@@ -67,6 +74,18 @@ public class TbCountryController {
     public BaseResult approve(HttpServletRequest request, @NotBlank(message = "工单id不能为空") String id,
                               @NotNull Integer status){
         tbCountryService.approve(id, status);
+        return BaseResult.success(null);
+    }
+
+    /**
+     * 申请退出村庄
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/exitCountry.do", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResult exitCountry(HttpServletRequest request, HttpServletResponse response){
         return BaseResult.success(null);
     }
 }

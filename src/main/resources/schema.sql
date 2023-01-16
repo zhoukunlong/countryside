@@ -177,6 +177,7 @@ CREATE TABLE public.tb_user_role (
 	relat_name varchar(255) NULL,
 	create_time varchar(255) NOT NULL,
 	update_time varchar(255) NOT NULL,
+	country_id varchar(255) NOT NULL,
 	is_delete int4 NOT NULL
 );
 COMMENT ON TABLE public.tb_user_role IS '用户角色关联表';
@@ -187,6 +188,7 @@ COMMENT ON COLUMN public.tb_user_role.id IS '主键id';
 COMMENT ON COLUMN public.tb_user_role.user_id IS '用户id';
 COMMENT ON COLUMN public.tb_user_role.role_id IS '角色id';
 COMMENT ON COLUMN public.tb_user_role.relat_name IS '角色名称描述';
+COMMENT ON COLUMN public.tb_user_role.country_id IS '村庄名称';
 COMMENT ON COLUMN public.tb_user_role.create_time IS '创建时间';
 COMMENT ON COLUMN public.tb_user_role.update_time IS '修改时间';
 COMMENT ON COLUMN public.tb_user_role.is_delete IS '是否删除标识 0：否  1：是';
@@ -198,6 +200,7 @@ CREATE TABLE public.tb_process (
 	process_content varchar(255) NOT NULL,
 	status int4 NOT NULL DEFAULT 0,
 	user_id varchar(255) NOT NULL,
+	approve_role_id varchar(255) NOT NULL,
 	country_id varchar(255) NOT NULL,
 	create_time varchar(255) NOT NULL,
 	update_time varchar(255) NOT NULL,
@@ -213,6 +216,7 @@ COMMENT ON COLUMN public.tb_process.process_title IS '申请标题';
 COMMENT ON COLUMN public.tb_process.process_content IS '申请内容';
 COMMENT ON COLUMN public.tb_process.status IS '申请状态 0：审批中 1：审批通过 2：审批不通过';
 COMMENT ON COLUMN public.tb_process.user_id IS '申请人';
+COMMENT ON COLUMN public.tb_process.approve_role_id IS '审批角色';
 COMMENT ON COLUMN public.tb_process.country_id IS '村庄id';
 COMMENT ON COLUMN public.tb_process.create_time IS '创建时间';
 COMMENT ON COLUMN public.tb_process.update_time IS '修改时间';

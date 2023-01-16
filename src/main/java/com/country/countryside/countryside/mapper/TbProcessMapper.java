@@ -28,6 +28,7 @@ public interface TbProcessMapper {
             @Result(column = "process_content", property = "processContent"),
             @Result(column = "status", property = "status"),
             @Result(column = "user_id", property = "userId"),
+            @Result(column = "approve_role_id", property = "approveRoleId"),
             @Result(column = "country_id", property = "countryId")
     })
     TbProcess find();
@@ -45,6 +46,7 @@ public interface TbProcessMapper {
             "process_content," +
             "status," +
             "user_id," +
+            "approve_role_id," +
             "country_id" +
             ")" +
             "values(" +
@@ -56,6 +58,7 @@ public interface TbProcessMapper {
             "#{processContent}," +
             "#{status}," +
             "#{userId}," +
+            "#{approveRoleId}," +
             "#{countryId}" +
             ")")
     void addProcess(TbProcess tbProcess);

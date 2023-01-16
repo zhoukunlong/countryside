@@ -1,11 +1,13 @@
 package com.country.countryside.utils;
 
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(value = "/server/{userId}")
@@ -48,7 +50,7 @@ public class WebSocketUtils {
             if(entity.contains(sessionId)){
                 sessionMap.remove(sessionMap.get(entity));
                 synchronized (onlineCount) {
-                    onlineCount++;
+                    onlineCount--;
                 }
                 break;
             }
@@ -81,10 +83,28 @@ public class WebSocketUtils {
      * @param message
      * @param session
      */
-    public void sendMessage(String message, Session session) throws IOException {
+    public static void sendMessage(String message, Session session) {
         if(session == null){
             return;
         }
-        session.getBasicRemote().sendText(message);
+        try {
+            session.getBasicRemote().sendText(message);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 从会话池中获取用户的链接
+     * @return
+     */
+    public static List<Session> getSession(String userId){
+        List<Session> sessions = Lists.newArrayList();
+        for(String entity : sessionMap.keySet()){
+            if(entity.contains(userId)){
+                sessions.add(sessionMap.get(entity));
+            }
+        }
+        return sessions;
     }
 }

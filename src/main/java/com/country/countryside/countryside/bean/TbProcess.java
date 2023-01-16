@@ -43,6 +43,11 @@ public class TbProcess implements Serializable {
     private String userId;
 
     /**
+     * 申请人
+     */
+    private String approveRoleId;
+
+    /**
      * 村庄id
      */
     private String countryId;

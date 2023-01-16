@@ -1,6 +1,8 @@
 package com.country.countryside.countryside.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.country.countryside.common.CommonConstants;
+import com.country.countryside.common.CommonUtils;
 import com.country.countryside.config.enums.ErrorCodeEnum;
 import com.country.countryside.countryside.bean.TbCountry;
 import com.country.countryside.countryside.bean.TbProcess;
@@ -9,15 +11,23 @@ import com.country.countryside.countryside.mapper.TbProcessMapper;
 import com.country.countryside.countryside.service.TbCountryService;
 import com.country.countryside.countryside.vo.CountryInVo;
 import com.country.countryside.exception.DescribeException;
+import com.country.countryside.role.bean.TbUserRole;
+import com.country.countryside.role.service.TbRoleInfoService;
+import com.country.countryside.role.vo.UserRoleInVo;
 import com.country.countryside.user.bean.TbUser;
 import com.country.countryside.user.mapper.TbUserMapper;
+import com.country.countryside.utils.WebSocketUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.websocket.Session;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 村庄业务操作类
@@ -35,6 +45,8 @@ public class TbCountryServiceImpl implements TbCountryService {
     private TbProcessMapper tbProcessMapper;
     @Resource
     private TbUserMapper tbUserMapper;
+    @Autowired
+    private TbRoleInfoService tbRoleInfoService;
 
     /**
      * 添加村庄
@@ -42,17 +54,40 @@ public class TbCountryServiceImpl implements TbCountryService {
      */
     @Transactional
     @Override
-    public void addCountry(CountryInVo inVo) {
-        try {
-            TbCountry tbCountry = new TbCountry();
-            BeanUtils.copyProperties(inVo,tbCountry);
-            tbCountry.setCreateTime(CommonConstants.format.format(new Date()));
-            tbCountry.setUpdateTime(CommonConstants.format.format(new Date()));
-            tbCountry.setIsDelete(CommonConstants.Delete.NO);
-            tbCountryMapper.addCountry(tbCountry);
-        }catch (Exception e){
-            e.printStackTrace();
+    public void addCountry(HttpServletRequest request, CountryInVo inVo) {
+
+        String userId = CommonUtils.getUserId(request);
+        if(StringUtils.isEmpty(userId)){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30002.getCode(),ErrorCodeEnum.ERROR_0xbdc30002.getTips());
         }
+        /**
+         * 首先判断用户是否再其他村庄
+         */
+        TbUser tbUser = tbUserMapper.findById(userId);
+        if(!StringUtils.isEmpty(tbUser.getCountryId())){
+            TbCountry tbCountry = tbCountryMapper.findById(tbUser.getCountryId());
+            if(tbCountry != null){
+                throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30001.getCode(),ErrorCodeEnum.ERROR_0xbdc30001.getTips());
+            }
+        }
+        /**
+         * 添加村庄信息
+         */
+        TbCountry tbCountry = new TbCountry();
+        BeanUtils.copyProperties(inVo,tbCountry);
+        tbCountry.setCreateTime(CommonConstants.format.format(new Date()));
+        tbCountry.setUpdateTime(CommonConstants.format.format(new Date()));
+        tbCountry.setIsDelete(CommonConstants.Delete.NO);
+        tbCountryMapper.addCountry(tbCountry);
+        /**
+         * 给申请用户赋超级管理员权限
+         */
+        UserRoleInVo _inVo = new UserRoleInVo();
+        _inVo.setUserId(userId);
+        _inVo.setCountryId(tbCountry.getId());
+        _inVo.setRelatName("村长");
+        _inVo.setRoleId(CommonConstants.ROLE.administrator);
+        tbRoleInfoService.addUserRole(_inVo);
     }
 
     /**
@@ -62,7 +97,7 @@ public class TbCountryServiceImpl implements TbCountryService {
      */
     @Transactional
     @Override
-    public void joinCountry(String userId, String countryId) {
+    public String joinCountry(String userId, String countryId) {
         /**
          * 判断用户是否已加入村庄
          */
@@ -75,7 +110,7 @@ public class TbCountryServiceImpl implements TbCountryService {
          */
         TbCountry tbCountry = tbCountryMapper.findById(countryId);
         if(tbCountry == null){
-            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc20001.getCode(),ErrorCodeEnum.ERROR_0xbdc20001.getTips());
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30003.getCode(),ErrorCodeEnum.ERROR_0xbdc30003.getTips());
         }
         /**
          * 如果存在，计入申请工单，等待村长审批
@@ -89,8 +124,21 @@ public class TbCountryServiceImpl implements TbCountryService {
         tbProcess.setUpdateTime(CommonConstants.format.format(new Date()));
         tbProcess.setProcessTitle(CommonConstants.CONTENT);
         tbProcess.setProcessContent(CommonConstants.CONTENT);
-        //websocket推送消息给村长
+        //websocket推送消息给村庄管理员
+        List<TbUserRole> userRoleList = tbRoleInfoService.findByRoleId(CommonConstants.ROLE.administrator, countryId);
+        if(userRoleList != null && userRoleList.size() > 0){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("applyUser",userId);
+            jsonObject.put("content", CommonConstants.CONTENT);
+            jsonObject.put("countryName", tbCountry.getCountryName());
+            jsonObject.put("processId",tbProcess.getId());
+            List<Session> sessions = WebSocketUtils.getSession(userId);
+            sessions.forEach((session) -> {
+                WebSocketUtils.sendMessage(jsonObject.toJSONString(),session);
+            });
+        }
         tbProcessMapper.addProcess(tbProcess);
+        return tbProcess.getId();
     }
 
     /**
