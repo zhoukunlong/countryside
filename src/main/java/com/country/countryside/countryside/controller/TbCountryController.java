@@ -3,6 +3,8 @@ package com.country.countryside.countryside.controller;
 import com.country.countryside.common.BaseResult;
 import com.country.countryside.countryside.service.TbCountryService;
 import com.country.countryside.countryside.vo.CountryInVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import javax.validation.constraints.NotNull;
  * @since
  * @see
  */
+@Api(tags = "村庄管理模块")
 @RestController
 @RequestMapping(value = "/country")
 public class TbCountryController {
@@ -31,6 +34,7 @@ public class TbCountryController {
      * @param inVo
      * @return
      */
+    @ApiOperation(value = "村庄添加接口", notes = "添加村庄信息")
     @RequestMapping(value = "/addCountry.do", method = RequestMethod.POST)
     public BaseResult addCountry(HttpServletRequest request, @Validated @RequestBody CountryInVo inVo){
         tbCountryService.addCountry(inVo);
