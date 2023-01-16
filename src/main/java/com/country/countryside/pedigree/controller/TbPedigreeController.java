@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 族谱信息前端控制类
@@ -24,6 +25,12 @@ public class TbPedigreeController {
 
     @Autowired
     private TbPedigreeService tbPedigreeService;
+
+    @RequestMapping(value = "/applyPedigree.do", method = RequestMethod.GET)
+    public BaseResult applyPedigree(HttpServletRequest request, @NotBlank(message = "族谱名称不能为空") String name){
+
+        return BaseResult.success(null);
+    }
 
     /**
      * 添加族谱信息

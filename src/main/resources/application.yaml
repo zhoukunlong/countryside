@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /countryside
 spring:
+  thymeleaf:
+    suffix: .html
+    prefix: classpath:/templates/
   servlet:
     multipart:
       max-file-size: 100MB

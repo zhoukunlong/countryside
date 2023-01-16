@@ -1,6 +1,8 @@
 package com.country.countryside.pedigree.service.impl;
 
 import com.country.countryside.common.CommonConstants;
+import com.country.countryside.countryside.bean.TbProcess;
+import com.country.countryside.countryside.mapper.TbProcessMapper;
 import com.country.countryside.pedigree.bean.TbPedigree;
 import com.country.countryside.pedigree.bean.TbPedigreeTree;
 import com.country.countryside.pedigree.mapper.TbPedigreeMapper;
@@ -29,6 +31,8 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
     private TbPedigreeMapper tbPedigreeMapper;
     @Resource
     private TbPedigreeTreeMapper tbPedigreeTreeMapper;
+    @Resource
+    private TbProcessMapper tbProcessMapper;
 
     /**
      * 添加族谱信息
@@ -105,5 +109,29 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
     @Override
     public void updatePedigreeTree(PedigreeTreeInVo inVo) {
 
+    }
+
+    /**
+     * 申请创建族谱
+     * @param userId
+     * @param name
+     * @return
+     */
+    @Transactional
+    @Override
+    public String applyPedigree(String userId, String name, String countryId) {
+        //添加申请信息
+        TbProcess tbProcess = new TbProcess();
+        tbProcess.setProcessTitle(CommonConstants.APPLY_PEDIGREE);
+        tbProcess.setProcessContent(name);
+        tbProcess.setUserId(userId);
+        tbProcess.setIsDelete(CommonConstants.Delete.NO);
+        tbProcess.setCreateTime(CommonConstants.format.format(new Date()));
+        tbProcess.setUpdateTime(CommonConstants.format.format(new Date()));
+        tbProcess.setStatus(CommonConstants.ProcessStatus.PROCESSING);
+        tbProcess.setCountryId(countryId);
+        tbProcessMapper.addProcess(tbProcess);
+        //websocket推送消息到相应负责人
+        return tbProcess.getId();
     }
 }

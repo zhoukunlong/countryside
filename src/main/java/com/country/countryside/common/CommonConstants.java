@@ -15,9 +15,14 @@ public class CommonConstants {
     public static final String DEFAULT_PASSWORD = "123456";
 
     /**
-     * 默认申请内容
+     * 默认申请加入村庄内容
      */
     public static final String CONTENT = "申请加入";
+
+    /**
+     * 默认申请创建族谱内容
+     */
+    public static final String APPLY_PEDIGREE = "申请创建族谱";
 
     public interface Delete{
         /**

@@ -48,4 +48,12 @@ public interface TbPedigreeService {
      */
     void updatePedigreeTree(PedigreeTreeInVo inVo);
 
+    /**
+     * 申请创建族谱
+     * @param userId
+     * @param name
+     * @return
+     */
+    String applyPedigree(String userId, String name, String countryId);
+
 }

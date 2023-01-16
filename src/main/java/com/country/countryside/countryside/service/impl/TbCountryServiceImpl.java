@@ -89,6 +89,7 @@ public class TbCountryServiceImpl implements TbCountryService {
         tbProcess.setUpdateTime(CommonConstants.format.format(new Date()));
         tbProcess.setProcessTitle(CommonConstants.CONTENT);
         tbProcess.setProcessContent(CommonConstants.CONTENT);
+        //websocket推送消息给村长
         tbProcessMapper.addProcess(tbProcess);
     }
 
