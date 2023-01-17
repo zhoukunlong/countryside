@@ -14,6 +14,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public BaseResult handler(Exception e){
+        e.printStackTrace();
         return BaseResult.fail(e.getMessage());
     }
 
@@ -24,6 +25,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = DescribeException.class)
     public BaseResult handler(DescribeException e){
+        e.printStackTrace();
         return BaseResult.fail(e.getCode(), e.getMessage(),null);
     }
 }

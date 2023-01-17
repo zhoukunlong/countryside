@@ -63,4 +63,15 @@ public class TbUserServiceImpl implements TbUserService {
     public void updateUser(UserInVo inVo) {
 
     }
+
+    /**
+     * 用户登入
+     * @param account
+     * @param password
+     * @return
+     */
+    @Override
+    public TbUser login(String account, String password) {
+        return tbUserMapper.findByAccountAndPassword(account,password);
+    }
 }

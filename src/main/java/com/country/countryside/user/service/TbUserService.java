@@ -1,5 +1,6 @@
 package com.country.countryside.user.service;
 
+import com.country.countryside.user.bean.TbUser;
 import com.country.countryside.user.vo.UserInVo;
 
 /**
@@ -28,4 +29,12 @@ public interface TbUserService {
      * @param inVo
      */
     void updateUser(UserInVo inVo);
+
+    /**
+     * 用户登入
+     * @param account
+     * @param password
+     * @return
+     */
+    TbUser login(String account, String password);
 }

@@ -123,4 +123,13 @@ public interface TbUserMapper {
      */
     @Select("select * from tb_user t where t.id = #{id} and t.is_delete = 0")
     TbUser findById(String id);
+
+    /**
+     * 根据账户和密码查询用户信息
+     * @param account
+     * @param password
+     * @return
+     */
+    @Select("select * from tb_user t where (t.account = #{account} or t.user_tel = #{account}) and t.password = #{password} and t.is_delete = 0")
+    TbUser findByAccountAndPassword(String account, String password);
 }

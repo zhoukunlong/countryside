@@ -22,7 +22,7 @@ spring:
     data: classpath:init.sql
     initialization-mode: always
     sql-script-encoding: utf-8
-    continue-on-error: false
+    continue-on-error: true
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

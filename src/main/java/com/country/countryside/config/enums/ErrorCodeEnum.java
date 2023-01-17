@@ -15,6 +15,7 @@ public enum ErrorCodeEnum {
     ERROR_0xbdc30001("0xbdc30001", "用户已在其他村庄，需要先退出再申请","Parameter error"),
     ERROR_0xbdc30002("0xbdc30002", "用户未登入，请先登入","please login in"),
     ERROR_0xbdc30003("0xbdc30003", "用户已在其他村庄，不能创建村庄","Parameter error"),
+    ERROR_0xbdc30004("0xbdc30004", "用户名或者密码错误","Parameter error"),
 
     //族谱
     ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error"),
