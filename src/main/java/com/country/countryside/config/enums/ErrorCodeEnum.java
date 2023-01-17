@@ -17,7 +17,10 @@ public enum ErrorCodeEnum {
     ERROR_0xbdc30003("0xbdc30003", "用户已在其他村庄，不能创建村庄","Parameter error"),
 
     //族谱
-    ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error")
+    ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error"),
+
+    //工单
+    ERROR_0xbdc50001("0xbdc50001", "存在在途工单，等待审批完成再操作","Parameter error")
     ;
 
     private String code;

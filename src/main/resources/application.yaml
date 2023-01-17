@@ -18,6 +18,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/country
     platform: postgres
+    schema: classpath:schema.sql
+    data: classpath:init.sql
+    initialization-mode: always
+    sql-script-encoding: utf-8
+    continue-on-error: false
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

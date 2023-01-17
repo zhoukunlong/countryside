@@ -4,6 +4,8 @@ import com.country.countryside.countryside.bean.TbCountry;
 import com.country.countryside.countryside.bean.TbProcess;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * 申请工单
  * @author zhoukunlong
@@ -86,4 +88,12 @@ public interface TbProcessMapper {
     @Select("select * from tb_process t where t.id = #{id} and t.is_delete = 0 and t.status = 0")
     @ResultMap(value = "tbProcess")
     TbProcess findById(String id);
+
+    /**
+     * 查询用户在途工单
+     * @param userId
+     * @return
+     */
+    @Select("select * from tb_process t where user_id = #{userId} and is_delete = 0 and t.status = 0")
+    List<TbProcess> findByUserId(String userId);
 }

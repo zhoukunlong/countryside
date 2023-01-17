@@ -64,6 +64,7 @@ public interface TbCountryMapper{
      * @return
      */
     @Select("select * from tb_country t where t.id = #{id} and t.is_delete = 0")
+    @ResultMap(value = "tbCountry")
     TbCountry findById(String id);
 
     /**

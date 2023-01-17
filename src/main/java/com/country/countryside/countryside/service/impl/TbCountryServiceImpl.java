@@ -85,7 +85,7 @@ public class TbCountryServiceImpl implements TbCountryService {
         UserRoleInVo _inVo = new UserRoleInVo();
         _inVo.setUserId(userId);
         _inVo.setCountryId(tbCountry.getId());
-        _inVo.setRelatName("村长");
+        _inVo.setRelatName(CommonConstants.DEFAULT_ROLE_NAME);
         _inVo.setRoleId(CommonConstants.ROLE.administrator);
         tbRoleInfoService.addUserRole(_inVo);
     }
@@ -113,6 +113,13 @@ public class TbCountryServiceImpl implements TbCountryService {
             throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30003.getCode(),ErrorCodeEnum.ERROR_0xbdc30003.getTips());
         }
         /**
+         * 判断用户是否有在途工单
+         */
+        List<TbProcess> tbProcesss = tbProcessMapper.findByUserId(userId);
+        if(tbProcesss != null && tbProcesss.size() > 0){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc50001.getCode(),ErrorCodeEnum.ERROR_0xbdc50001.getTips());
+        }
+        /**
          * 如果存在，计入申请工单，等待村长审批
          */
         TbProcess tbProcess = new TbProcess();
@@ -122,8 +129,10 @@ public class TbCountryServiceImpl implements TbCountryService {
         tbProcess.setUserId(userId);
         tbProcess.setCreateTime(CommonConstants.format.format(new Date()));
         tbProcess.setUpdateTime(CommonConstants.format.format(new Date()));
+        tbProcess.setApproveRoleId(CommonConstants.ROLE.administrator);
         tbProcess.setProcessTitle(CommonConstants.CONTENT);
         tbProcess.setProcessContent(CommonConstants.CONTENT);
+        tbProcessMapper.addProcess(tbProcess);
         //websocket推送消息给村庄管理员
         List<TbUserRole> userRoleList = tbRoleInfoService.findByRoleId(CommonConstants.ROLE.administrator, countryId);
         if(userRoleList != null && userRoleList.size() > 0){
@@ -137,7 +146,6 @@ public class TbCountryServiceImpl implements TbCountryService {
                 WebSocketUtils.sendMessage(jsonObject.toJSONString(),session);
             });
         }
-        tbProcessMapper.addProcess(tbProcess);
         return tbProcess.getId();
     }
 

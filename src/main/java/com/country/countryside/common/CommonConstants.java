@@ -24,6 +24,11 @@ public class CommonConstants {
      */
     public static final String APPLY_PEDIGREE = "申请创建族谱";
 
+    /**
+     * 默认角色名称
+     */
+    public static final String DEFAULT_ROLE_NAME = "村长";
+
     public interface Delete{
         /**
          * 已删除
