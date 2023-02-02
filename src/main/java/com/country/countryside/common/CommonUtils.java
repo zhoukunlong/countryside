@@ -1,5 +1,6 @@
 package com.country.countryside.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.country.countryside.context.JwtPayload;
 import com.country.countryside.utils.JwtUtils;
 import org.springframework.util.StringUtils;
@@ -38,7 +39,7 @@ public class CommonUtils {
         }
         JwtPayload jwtPayload = null;
         try {
-            jwtPayload = (JwtPayload) JwtUtils.getAuth(token);
+            jwtPayload = JSONObject.parseObject(JwtUtils.getAuth(token).toString(),JwtPayload.class);
         }catch (Exception e){
             e.printStackTrace();
             return null;

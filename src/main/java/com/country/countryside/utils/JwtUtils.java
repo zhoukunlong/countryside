@@ -96,12 +96,13 @@ public class JwtUtils {
     }
 
     public static void main(String[] args){
-        /*JwtPayload load = new JwtPayload();
+        JwtPayload load = new JwtPayload();
         load.setUserName("zhoukunlong");
+        load.setUserId("zhoukunlong");
         String jwtStr = addAuth(load);
-        System.out.println(jwtStr);*/
+        System.out.println(jwtStr);
 
-        /*String result = (String) getAuth("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRob3JpemF0aW9uIiwicGF5bG9hZCI6IntcInVzZXJJZFwiOlwiemhvdWt1bmxvbmdcIixcInVzZXJOYW1lXCI6XCJ6aG91a3VubG9uZzNjOTY3YzRlLTZhNjUtNGQ3Zi1hNzg1LTk1YjM5NjQ4YmQzN1wifSJ9.yetaQk1q_itbdAPX4liCYRw0Dhfhk7RTYDjbhUd6ALayQFsYE6OLpCP3icNZ5QFcKyNMocjLy_6DFs12rnU2pA");
+       /* String result = (String) getAuth("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRob3JpemF0aW9uIiwicGF5bG9hZCI6IntcInVzZXJJZFwiOlwiemhvdWt1bmxvbmdcIixcInVzZXJOYW1lXCI6XCJ6aG91a3VubG9uZzNjOTY3YzRlLTZhNjUtNGQ3Zi1hNzg1LTk1YjM5NjQ4YmQzN1wifSJ9.yetaQk1q_itbdAPX4liCYRw0Dhfhk7RTYDjbhUd6ALayQFsYE6OLpCP3icNZ5QFcKyNMocjLy_6DFs12rnU2pA");
         JwtPayload load1 = JSON.parseObject(result,JwtPayload.class);
         System.out.println(load1.getUserName());*/
     }

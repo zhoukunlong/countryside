@@ -134,4 +134,13 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
         //websocket推送消息到相应负责人
         return tbProcess.getId();
     }
+
+    /**
+     * 移除用户族谱信息，移除族谱信息会移除用户以及用户以下节点的信息
+     * @param userId
+     */
+    @Override
+    public void removePedigreeInfo(String userId) {
+
+    }
 }

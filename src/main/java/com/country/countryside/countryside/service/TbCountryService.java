@@ -27,4 +27,18 @@ public interface TbCountryService {
      * @param id
      */
     void approve(String id, Integer status);
+
+    /**
+     * 用户申请离开村庄
+     * @param id
+     * @param userId
+     */
+    void applyExitCountry(String id, String userId);
+
+    /**
+     * 从村庄中移除用户
+     * @param countryId
+     * @param userId
+     */
+    void deleteUser(String countryId, String userId);
 }

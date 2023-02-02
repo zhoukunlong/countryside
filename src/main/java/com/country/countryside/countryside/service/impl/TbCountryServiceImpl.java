@@ -169,4 +169,37 @@ public class TbCountryServiceImpl implements TbCountryService {
             tbUserMapper.updateUser(tbUser);
         }
     }
+
+    /**
+     * 用户申请离开村庄
+     * @param id
+     * @param userId
+     */
+    @Override
+    public void applyExitCountry(String id, String userId) {
+
+    }
+
+    /**
+     * 移除成员，移除成员以及成员子嗣和配偶在宗族中的信息
+     * @param countryId
+     * @param userId
+     */
+    @Transactional
+    @Override
+    public void deleteUser(String countryId, String userId) {
+        //首先判断村庄是否存在
+        TbCountry tbCountry = tbCountryMapper.findById(countryId);
+        if(tbCountry == null){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc20001.getCode(),ErrorCodeEnum.ERROR_0xbdc20001.getTips());
+        }
+        //判断用户是否存在
+        TbUser tbUser = tbUserMapper.findById(userId);
+        if(tbUser == null){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc30005.getCode(),ErrorCodeEnum.ERROR_0xbdc30005.getTips());
+        }
+        //判断族谱树是否有下一代，有的话移除
+        //将用户所属村庄置为null
+        tbUserMapper.removeUser(userId);
+    }
 }

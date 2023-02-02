@@ -8,7 +8,7 @@ public enum ErrorCodeEnum {
     ERROR_0xbdc10001("0xbdc10001", "参数错误","Parameter error"),
 
     //村庄
-    ERROR_0xbdc20001("0xbdc20001", "申请加入的村庄不存在","countryside is not exist"),
+    ERROR_0xbdc20001("0xbdc20001", "村庄不存在","countryside is not exist"),
     ERROR_0xbdc20002("0xbdc20002", "申请工单不存在或已被撤回","the order is not exist"),
 
     //用户
@@ -16,6 +16,7 @@ public enum ErrorCodeEnum {
     ERROR_0xbdc30002("0xbdc30002", "用户未登入，请先登入","please login in"),
     ERROR_0xbdc30003("0xbdc30003", "用户已在其他村庄，不能创建村庄","Parameter error"),
     ERROR_0xbdc30004("0xbdc30004", "用户名或者密码错误","Parameter error"),
+    ERROR_0xbdc30005("0xbdc30005", "用户不存在","user is not exist"),
 
     //族谱
     ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error"),

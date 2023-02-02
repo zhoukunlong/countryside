@@ -78,14 +78,29 @@ public class TbCountryController {
     }
 
     /**
-     * 申请退出村庄
+     * 申请退出村庄,用户退出村庄需要通过申请才能退出
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value = "/exitCountry.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/applyExitCountry.do", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResult exitCountry(HttpServletRequest request, HttpServletResponse response){
+    public BaseResult applyExitCountry(HttpServletRequest request, HttpServletResponse response){
         return BaseResult.success(null);
     }
+
+    /**
+     * 管理员从村庄中移除用户
+     * @param request
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/deleteUser.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult deleteUser(HttpServletRequest request, @NotBlank(message = "用户id不能为空") String userId){
+
+        return BaseResult.success(null);
+    }
+
+
 }

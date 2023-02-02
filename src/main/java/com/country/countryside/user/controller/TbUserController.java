@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotBlank;
 
 /**
  * 用户模块
@@ -105,6 +104,28 @@ public class TbUserController {
             response.addCookie(_cookie);
         }
         return BaseResult.success(token);
+    }
+
+    /**
+     * 退出登入
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult logout(HttpServletRequest request, HttpServletResponse response){
+
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            if("Authorization".equalsIgnoreCase(cookie.getName())){
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
+        return BaseResult.success(null);
     }
 
     /**

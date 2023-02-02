@@ -102,8 +102,8 @@ public interface TbUserMapper {
             "<if test='password != null and password != &apos;&apos;'> password = #{password},</if>" +
             "<if test='birthTime != null and birthTime != &apos;&apos;'> birth_time = #{birthTime},</if>" +
             "<if test='countryId != null and countryId != &apos;&apos;'> country_id = #{countryId},</if>" +
-            "<if test='userSex != null and userSex != &apos;&apos;'> user_sex = #{userSex},</if>" +
-            "<if test='userStatus != null and userStatus != &apos;&apos;'> user_status = #{userStatus},</if>" +
+            "<if test='userSex != null'> user_sex = #{userSex},</if>" +
+            "<if test='userStatus != null'> user_status = #{userStatus},</if>" +
             "<if test='userTel != null and userTel != &apos;&apos;'> user_tel = #{userTel},</if>" +
             "<if test='userNo != null and userNo != &apos;&apos;'> user_no = #{userNo},</if>" +
             "<if test='userDesc != null and userDesc != &apos;&apos;'> user_desc = #{userDesc},</if>" +
@@ -132,4 +132,11 @@ public interface TbUserMapper {
      */
     @Select("select * from tb_user t where (t.account = #{account} or t.user_tel = #{account}) and t.password = #{password} and t.is_delete = 0")
     TbUser findByAccountAndPassword(String account, String password);
+
+    /**
+     * 将用户从村庄中移除
+     * @param userId
+     */
+    @Update("update tb_user set country_id = null where user_id = #{userId} and is_delete = 0")
+    void removeUser(String userId);
 }

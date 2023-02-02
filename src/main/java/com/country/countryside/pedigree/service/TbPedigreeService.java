@@ -56,4 +56,9 @@ public interface TbPedigreeService {
      */
     String applyPedigree(String userId, String name, String countryId);
 
+    /**
+     * 移除用户的族谱信息
+     * @param userId
+     */
+    void removePedigreeInfo(String userId);
 }
