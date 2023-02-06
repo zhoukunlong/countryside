@@ -19,7 +19,8 @@ public enum ErrorCodeEnum {
     ERROR_0xbdc30005("0xbdc30005", "用户不存在","user is not exist"),
 
     //族谱
-    ERROR_0xbdc40001("0xbdc10001", "参数错误","Parameter error"),
+    ERROR_0xbdc40001("0xbdc40001", "节点不存在","Parameter error"),
+    ERROR_0xbdc40002("0xbdc40002", "族谱不存在","Parameter error"),
 
     //工单
     ERROR_0xbdc50001("0xbdc50001", "存在在途工单，等待审批完成再操作","Parameter error")

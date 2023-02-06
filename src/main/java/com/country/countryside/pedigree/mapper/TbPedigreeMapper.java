@@ -26,6 +26,7 @@ public interface TbPedigreeMapper {
             @Result(column = "is_delete", property = "isDelete"),
             @Result(column = "country_id", property = "countryId"),
             @Result(column = "pedigree_desc", property = "pedigreeDesc"),
+            @Result(column = "start_index", property = "startIndex"),
             @Result(column = "pedigree_img", property = "pedigreeImg")
     })
     TbPedigree find();
@@ -42,6 +43,7 @@ public interface TbPedigreeMapper {
             "is_delete," +
             "country_id," +
             "pedigree_desc," +
+            "start_index," +
             "pedigree_img)" +
             "values(" +
             "#{id}," +
@@ -51,6 +53,7 @@ public interface TbPedigreeMapper {
             "#{isDelete}," +
             "#{countryId}," +
             "#{pedigreeDesc}," +
+            "#{startIndex}," +
             "#{pedigreeImg})")
     void addPedigree(TbPedigree tbPedigree);
 
@@ -70,7 +73,7 @@ public interface TbPedigreeMapper {
             "<if test='pedigreeName != null and pedigreeName != &apos;&apos;'> pedigree_name = #{pedigreeName},</if>" +
             "<if test='isDelete != null'> region_name = #{is_delete},</if>" +
             "<if test='pedigreeDesc != null and pedigreeDesc != &apos;&apos;'> pedigree_desc = #{pedigreeDesc},</if>" +
-            "<if test='pedigreeDesc != null and pedigreeDesc != &apos;&apos;'> pedigree_img = #{pedigreeDesc},</if>" +
+            "<if test='startIndex != null and startIndex != &apos;&apos;'> start_index = #{startIndex},</if>" +
             " id = #{id} " +
             "where id = #{id}" +
             "</script>")
@@ -84,4 +87,12 @@ public interface TbPedigreeMapper {
     @Select("select * from tb_pedigree t where t.id = #{id} and t.is_delete = 0")
     @ResultMap(value = "tbPedigree")
     TbPedigree findById(String id);
+
+    /**
+     * 修改族谱起始点
+     * @param id
+     * @param startIndex
+     */
+    @Update("update tb_pedigree set start_index = #{startIndex} where id = #{id}")
+    void updateStartIndex(String id, String startIndex);
 }

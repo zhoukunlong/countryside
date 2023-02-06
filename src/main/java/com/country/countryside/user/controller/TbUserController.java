@@ -11,6 +11,8 @@ import com.country.countryside.user.vo.LoginInVo;
 import com.country.countryside.user.vo.UserInVo;
 import com.country.countryside.utils.JwtUtils;
 import com.country.countryside.utils.Md5Utils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since
  * @see
  */
+@Api(tags = "用户管理模块")
 @RestController
 @RequestMapping(value = "/user")
 public class TbUserController {
@@ -39,6 +42,7 @@ public class TbUserController {
      * @param inVo
      * @return
      */
+    @ApiOperation(value = "用户注册接口", notes = "注册用户信息")
     @RequestMapping(value = "/regist.do", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult regist(HttpServletRequest request, @Validated @RequestBody UserInVo inVo){
@@ -52,6 +56,7 @@ public class TbUserController {
      * @param inVo
      * @return
      */
+    @ApiOperation(value = "添加用户接口", notes = "用于管理员添加用户")
     @RequestMapping(value = "/addUser.do", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult addUser(HttpServletRequest request, @Validated @RequestBody UserInVo inVo){
@@ -64,6 +69,7 @@ public class TbUserController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "用户登入接口", notes = "用户登入")
     @RequestMapping(value = "/login.do", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult login(HttpServletRequest request, HttpServletResponse response,
@@ -112,6 +118,7 @@ public class TbUserController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "退出登入接口", notes = "退出登入")
     @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     @ResponseBody
     public BaseResult logout(HttpServletRequest request, HttpServletResponse response){

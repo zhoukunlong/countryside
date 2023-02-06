@@ -13,11 +13,11 @@ spring:
   application:
     name: countryside
   datasource:
-    username: postgres
+    username: root
     password: 123456
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/country
-    platform: postgres
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.101:3306/countryside?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    platform: mysql
     schema: classpath:schema.sql
     data: classpath:init.sql
     initialization-mode: always

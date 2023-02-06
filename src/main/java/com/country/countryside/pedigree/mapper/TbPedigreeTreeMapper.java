@@ -105,4 +105,13 @@ public interface TbPedigreeTreeMapper {
     @Select("select * from tb_pedigree_tree t where t.parent_id = #{parentId} and t.is_delete = 0")
     @ResultMap(value = "tbPedigreeTree")
     List<TbPedigreeTree> findByParentId(String parentId);
+
+    /**
+     * 根据用户id查询关系树节点
+     * @param userId
+     * @return
+     */
+    @Select("select * from tb_pedigree_tree t where t.user_id = #{userId} and t.is_delete = 0")
+    @ResultMap(value = "tbPedigreeTree")
+    TbPedigreeTree findByUserId(String userId);
 }

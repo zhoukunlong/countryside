@@ -57,4 +57,9 @@ public class TbPedigree implements Serializable {
      */
     private String pedigreeImg;
 
+    /**
+     * 关系树开始节点
+     */
+    private String startIndex;
+
 }

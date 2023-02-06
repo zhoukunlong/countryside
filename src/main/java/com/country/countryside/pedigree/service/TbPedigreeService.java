@@ -61,4 +61,18 @@ public interface TbPedigreeService {
      * @param userId
      */
     void removePedigreeInfo(String userId);
+
+    /**
+     * 设置父节点
+     * @param startUser
+     * @param targetUser
+     */
+    void extend(String startUser, String targetUser);
+
+    /**
+     * 修改族谱起始点
+     * @param id
+     * @param startIndex
+     */
+    void updateStartIndex(String id, String startIndex);
 }
