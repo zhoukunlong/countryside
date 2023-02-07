@@ -86,8 +86,10 @@ public class TbPedigreeController {
      */
     @ApiOperation(value = "继承接口", notes = "设置父节点")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "startUser", value = "子用户id", required = true, dataType = "String", example = "123123"),
-            @ApiImplicitParam(name = "targetUser", value = "父用户id", required = true, dataType = "String", example = "123123")
+            @ApiImplicitParam(name = "startUser", value = "子用户id", required = true,
+                    dataType = "String", example = "123123"),
+            @ApiImplicitParam(name = "targetUser", value = "父用户id", required = true,
+                    dataType = "String", example = "123123")
     })
     @RequestMapping(value = "/extend.do", method = RequestMethod.GET)
     @ResponseBody
@@ -106,8 +108,10 @@ public class TbPedigreeController {
      */
     @ApiOperation(value = "修改族谱起始点接口", notes = "修改族谱起始点，设置开始节点")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "族谱id", required = true, dataType = "String", example = "123123", paramType = "query"),
-            @ApiImplicitParam(name = "startIndex", value = "关系树节点id", required = true, dataType = "String", example = "123123", paramType = "query")
+            @ApiImplicitParam(name = "id", value = "族谱id", required = true,
+                    dataType = "String", example = "123123", paramType = "query"),
+            @ApiImplicitParam(name = "startIndex", value = "关系树节点id",
+                    required = true, dataType = "String", example = "123123", paramType = "query")
     })
     @RequestMapping(value = "/updateStartIndex.do", method = RequestMethod.GET)
     @ResponseBody
@@ -115,5 +119,41 @@ public class TbPedigreeController {
                                        @NotBlank(message = "开始节点不能为空") String startIndex){
         tbPedigreeService.updateStartIndex(id, startIndex);
         return BaseResult.success(null);
+    }
+
+    /**
+     * 根据父节点id查询树节点
+     * @param request
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据父节点ID查询子树接口", notes = "根据父节点ID查询子树信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "父节点id", required = true,
+                    dataType = "String", paramType = "query",example = "123123")
+    })
+    @RequestMapping(value = "/findByParentId.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult findByParentId(HttpServletRequest request,
+                                     @NotBlank(message = "id不能为空") String id){
+        return BaseResult.success(tbPedigreeService.findByParentId(id));
+    }
+
+    /**
+     * 根据id查询节点信息
+     * @param request
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据id查询节点信息接口", notes = "根据id查询节点信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "节点id", required = true,
+                    dataType = "String", paramType = "query",example = "123123")
+    })
+    @RequestMapping(value = "/findById.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult findById(HttpServletRequest request,
+                               @NotBlank(message = "id不能为空") String id){
+        return BaseResult.success(tbPedigreeService.findById(id));
     }
 }

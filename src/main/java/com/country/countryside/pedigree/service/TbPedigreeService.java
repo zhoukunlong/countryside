@@ -1,7 +1,10 @@
 package com.country.countryside.pedigree.service;
 
+import com.country.countryside.pedigree.vo.NodeOutVo;
 import com.country.countryside.pedigree.vo.PedigreeInVo;
 import com.country.countryside.pedigree.vo.PedigreeTreeInVo;
+
+import java.util.List;
 
 /**
  *
@@ -25,22 +28,10 @@ public interface TbPedigreeService {
     void deletePedigree(String id);
 
     /**
-     * 修改族谱信息
-     * @param inVo
-     */
-    void updatePedigree(PedigreeInVo inVo);
-
-    /**
      * 添加树节点
      * @param inVo
      */
     void addPedigreeTree(PedigreeTreeInVo inVo);
-
-    /**
-     * 删除节点
-     * @param id
-     */
-    void deletePedigreeTree(String id);
 
     /**
      * 修改节点信息
@@ -57,12 +48,6 @@ public interface TbPedigreeService {
     String applyPedigree(String userId, String name, String countryId);
 
     /**
-     * 移除用户的族谱信息
-     * @param userId
-     */
-    void removePedigreeInfo(String userId);
-
-    /**
      * 设置父节点
      * @param startUser
      * @param targetUser
@@ -75,4 +60,18 @@ public interface TbPedigreeService {
      * @param startIndex
      */
     void updateStartIndex(String id, String startIndex);
+
+    /**
+     * 根据父节点id查询子节点信息
+     * @param id
+     * @return
+     */
+    List<NodeOutVo> findByParentId(String id);
+
+    /**
+     * 根据id查询节点信息
+     * @param id
+     * @return
+     */
+    NodeOutVo findById(String id);
 }

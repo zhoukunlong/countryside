@@ -10,10 +10,12 @@ import com.country.countryside.pedigree.bean.TbPedigreeTree;
 import com.country.countryside.pedigree.mapper.TbPedigreeMapper;
 import com.country.countryside.pedigree.mapper.TbPedigreeTreeMapper;
 import com.country.countryside.pedigree.service.TbPedigreeService;
+import com.country.countryside.pedigree.vo.NodeOutVo;
 import com.country.countryside.pedigree.vo.PedigreeInVo;
 import com.country.countryside.pedigree.vo.PedigreeTreeInVo;
 import com.country.countryside.user.bean.TbUser;
 import com.country.countryside.user.mapper.TbUserMapper;
+import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,29 +72,11 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
     }
 
     /**
-     * 修改族谱信息
-     * @param inVo
-     */
-    @Override
-    public void updatePedigree(PedigreeInVo inVo) {
-
-    }
-
-    /**
      * 添加节点
      * @param inVo
      */
     @Override
     public void addPedigreeTree(PedigreeTreeInVo inVo) {
-
-    }
-
-    /**
-     * 删除节点
-     * @param id
-     */
-    @Override
-    public void deletePedigreeTree(String id) {
 
     }
 
@@ -127,15 +111,6 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
         tbProcessMapper.addProcess(tbProcess);
         //websocket推送消息到相应负责人
         return tbProcess.getId();
-    }
-
-    /**
-     * 移除用户族谱信息，移除族谱信息会移除用户以及用户以下节点的信息
-     * @param userId
-     */
-    @Override
-    public void removePedigreeInfo(String userId) {
-
     }
 
     /**
@@ -176,6 +151,47 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
             throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc40002.getCode(),ErrorCodeEnum.ERROR_0xbdc40002.getTips());
         }
         tbPedigreeMapper.updateStartIndex(id, startIndex);
+    }
+
+    /**
+     * 根据父节点id查询子节点信息
+     * @param id
+     * @return
+     */
+    @Override
+    public List<NodeOutVo> findByParentId(String id) {
+        List<TbPedigreeTree> trees = tbPedigreeTreeMapper.findByParentId(id);
+        if(trees == null || trees.size() <= 0){
+            return null;
+        }
+        List<NodeOutVo> outVos = Lists.newArrayList();
+        trees.forEach((tree) -> {
+            NodeOutVo outVo = new NodeOutVo();
+            BeanUtils.copyProperties(tree,outVo);
+            TbUser tbUser = tbUserMapper.findById(tree.getUserId());
+            BeanUtils.copyProperties(tbUser, outVo);
+            outVos.add(outVo);
+        });
+        return outVos;
+    }
+
+    /**
+     * 根据id查询节点信息
+     * @param id
+     * @return
+     */
+    @Override
+    public NodeOutVo findById(String id) {
+        TbPedigreeTree tree = tbPedigreeTreeMapper.findById(id);
+        if(tree == null){
+            return null;
+        }
+        NodeOutVo outVo = new NodeOutVo();
+        BeanUtils.copyProperties(tree, outVo);
+        //查询用户信息
+        TbUser tbUser = tbUserMapper.findById(tree.getUserId());
+        BeanUtils.copyProperties(tbUser, outVo);
+        return outVo;
     }
 
     /**
