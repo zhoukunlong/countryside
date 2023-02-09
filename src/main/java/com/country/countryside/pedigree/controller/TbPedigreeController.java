@@ -64,6 +64,24 @@ public class TbPedigreeController {
     }
 
     /**
+     * 删除族谱信息
+     * @param request
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "删除族谱接口", notes = "删除族谱信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "族谱id", required = true,
+                    dataType = "String", example = "123123")
+    })
+    @RequestMapping(value = "/deletePedigree.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult deletePedigree(HttpServletRequest request,
+                                     @NotBlank(message = "id不能为空") String id){
+        return BaseResult.success(null);
+    }
+
+    /**
      * 添加族谱信息树节点
      * @param request
      * @param inVo
@@ -155,5 +173,23 @@ public class TbPedigreeController {
     public BaseResult findById(HttpServletRequest request,
                                @NotBlank(message = "id不能为空") String id){
         return BaseResult.success(tbPedigreeService.findById(id));
+    }
+
+    /**
+     * 查询同村同代人
+     * @param request
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value = "查询本村同代人接口", notes = "查询本村同代人")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", required = true,
+                    dataType = "String", paramType = "query",example = "123123")
+    })
+    @RequestMapping(value = "/findCogenerations.do", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult findCogenerations(HttpServletRequest request,
+                                        @NotBlank(message = "用户id不能为空") String userId){
+        return BaseResult.success(tbPedigreeService.findCogenerations(userId));
     }
 }

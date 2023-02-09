@@ -21,7 +21,8 @@ public class PedigreeTreeInVo implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "123123")
+    @ApiModelProperty(value = "主键id", required = false,
+            example = "123123", notes = "主键id，新增时不用传递，修改时必须传递")
     private String id;
 
     /**

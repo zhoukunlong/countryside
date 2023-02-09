@@ -74,4 +74,11 @@ public interface TbPedigreeService {
      * @return
      */
     NodeOutVo findById(String id);
+
+    /**
+     * 查询所有同代人
+     * @param userId
+     * @return
+     */
+    List<NodeOutVo> findCogenerations(String userId);
 }

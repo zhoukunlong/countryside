@@ -2,6 +2,7 @@ package com.country.countryside.pedigree.mapper;
 
 import com.country.countryside.pedigree.bean.TbPedigreeTree;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -28,8 +29,7 @@ public interface TbPedigreeTreeMapper {
             @Result(column = "is_delete", property = "isDelete"),
             @Result(column = "country_id", property = "countryId"),
             @Result(column = "parent_id", property = "parentId"),
-            @Result(column = "pedigree_id", property = "pedigreeId"),
-            @Result(column = "wife_id", property = "wifeId"),
+            @Result(column = "route_path", property = "routePath"),
             @Result(column = "layer", property = "layer")
     })
     TbPedigreeTree find();
@@ -46,8 +46,7 @@ public interface TbPedigreeTreeMapper {
             "is_delete," +
             "country_id," +
             "parent_id," +
-            "pedigree_id," +
-            "wife_id," +
+            "route_path," +
             "layer)" +
             "values (" +
             "#{id}," +
@@ -57,8 +56,7 @@ public interface TbPedigreeTreeMapper {
             "#{isDelete}," +
             "#{countryId}," +
             "#{parentId}," +
-            "#{pedigreeId}," +
-            "#{wifeId}," +
+            "#{routePath}," +
             "#{layer})")
     void addPedigreeTree(TbPedigreeTree tbPedigreeTree);
 
@@ -80,8 +78,7 @@ public interface TbPedigreeTreeMapper {
             "<if test='isDelete != null'> is_delete = #{isDelete},</if>" +
             "<if test='countryId != null and countryId != &apos;&apos;'> country_id = #{countryId},</if>" +
             "<if test='parentId != null and parentId != &apos;&apos;'> parent_id = #{parentId},</if>" +
-            "<if test='pedigreeId != null and pedigreeId != &apos;&apos;'> pedigree_id = #{pedigreeId},</if>" +
-            "<if test='wifeId != null and wifeId != &apos;&apos;'> wife_id = #{wifeId},</if>" +
+            "<if test='routePath != null and routePath != &apos;&apos;'> route_path = #{routePath},</if>" +
             "<if test='layer != null and layer != &apos;&apos;'> layer = #{layer},</if>" +
             " id = #{id} " +
             "where id = #{id}" +
@@ -114,4 +111,16 @@ public interface TbPedigreeTreeMapper {
     @Select("select * from tb_pedigree_tree t where t.user_id = #{userId} and t.is_delete = 0")
     @ResultMap(value = "tbPedigreeTree")
     TbPedigreeTree findByUserId(String userId);
+
+    /**
+     * 查询同村所有同代人
+     * @param routePath
+     * @param layer
+     * @param countryId
+     * @return
+     */
+    @Select("select * from tb_pedigree_tree where route_path like concat('',#{routePath},'%') and " +
+            "layer = #{layer} and is_delete = 0 and country_id = #{countryId}")
+    @ResultMap(value = "tbPedigreeTree")
+    List<TbPedigreeTree> findCogenerations(String routePath, Integer layer, String countryId);
 }

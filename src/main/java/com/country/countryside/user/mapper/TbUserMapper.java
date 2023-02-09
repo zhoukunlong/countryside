@@ -122,6 +122,7 @@ public interface TbUserMapper {
      * @return
      */
     @Select("select * from tb_user t where t.id = #{id} and t.is_delete = 0")
+    @ResultMap(value = "tbUser")
     TbUser findById(String id);
 
     /**
@@ -131,6 +132,7 @@ public interface TbUserMapper {
      * @return
      */
     @Select("select * from tb_user t where (t.account = #{account} or t.user_tel = #{account}) and t.password = #{password} and t.is_delete = 0")
+    @ResultMap(value = "tbUser")
     TbUser findByAccountAndPassword(String account, String password);
 
     /**

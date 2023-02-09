@@ -1,6 +1,7 @@
 package com.country.countryside.user.service.impl;
 
 import com.country.countryside.common.CommonConstants;
+import com.country.countryside.common.CommonUtils;
 import com.country.countryside.pedigree.bean.TbPedigreeTree;
 import com.country.countryside.pedigree.mapper.TbPedigreeTreeMapper;
 import com.country.countryside.user.bean.TbUser;
@@ -54,10 +55,11 @@ public class TbUserServiceImpl implements TbUserService {
         TbPedigreeTree tbPedigreeTree = new TbPedigreeTree();
         tbPedigreeTree.setIsDelete(CommonConstants.Delete.NO);
         //添加用户时暂时将层级以及父节点置为null
-        tbPedigreeTree.setLayer(null);
+        tbPedigreeTree.setLayer(1);
         tbPedigreeTree.setCreateTime(CommonConstants.format.format(new Date()));
         tbPedigreeTree.setCountryId(inVo.getCountryId());
-        tbPedigreeTree.setParentId(null);
+        tbPedigreeTree.setParentId("-1");
+        tbPedigreeTree.setRoutePath(CommonUtils.getShortId());
         tbPedigreeTree.setUpdateTime(CommonConstants.format.format(new Date()));
         tbPedigreeTree.setUserId(tbUser.getId());
         tbPedigreeTreeMapper.addPedigreeTree(tbPedigreeTree);

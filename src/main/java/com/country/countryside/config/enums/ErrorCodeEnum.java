@@ -6,6 +6,7 @@ public enum ErrorCodeEnum {
 
     //公共部分
     ERROR_0xbdc10001("0xbdc10001", "参数错误","Parameter error"),
+    ERROR_0xbdc10002("0xbdc10002", "名称重复","Parameter error"),
 
     //村庄
     ERROR_0xbdc20001("0xbdc20001", "村庄不存在","countryside is not exist"),

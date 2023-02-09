@@ -148,11 +148,10 @@ CREATE TABLE tb_pedigree_tree (
 	user_id varchar(255) NOT NULL,
 	country_id varchar(255) NOT NULL,
 	parent_id varchar(255) NOT NULL,
-	pedigree_id varchar(255) NOT NULL,
 	create_time varchar(255) NOT NULL,
 	update_time varchar(255) NOT NULL,
-	wife_id varchar(255) NULL,
 	layer int4 NULL,
+	route_path varchar(10000),
 	is_delete int4 NOT NULL
 );
 /*COMMENT ON TABLE public.tb_pedigree_tree IS '族谱树';

@@ -1,6 +1,7 @@
 package com.country.countryside.pedigree.service.impl;
 
 import com.country.countryside.common.CommonConstants;
+import com.country.countryside.common.CommonUtils;
 import com.country.countryside.config.enums.ErrorCodeEnum;
 import com.country.countryside.countryside.bean.TbProcess;
 import com.country.countryside.countryside.mapper.TbProcessMapper;
@@ -52,6 +53,13 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
     @Override
     public void addPedigree(PedigreeInVo inVo) {
         /**
+         * 重名校验
+         */
+        List<TbPedigree> tbPedigrees = tbPedigreeMapper.findByName(inVo.getPedigreeName(),inVo.getCountryId());
+        if(tbPedigrees != null && tbPedigrees.size() > 0){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc10002.getCode(), ErrorCodeEnum.ERROR_0xbdc10002.getTips());
+        }
+        /**
          * 添加族谱信息
          */
         TbPedigree tbPedigree = new TbPedigree();
@@ -66,6 +74,7 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
      * 删除族谱信息
      * @param id
      */
+    @Transactional
     @Override
     public void deletePedigree(String id) {
 
@@ -77,7 +86,19 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
      */
     @Override
     public void addPedigreeTree(PedigreeTreeInVo inVo) {
-
+        //查询父节点信息
+        TbPedigreeTree tree = tbPedigreeTreeMapper.findById(inVo.getParentId());
+        if(tree == null){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc40001.getCode(),ErrorCodeEnum.ERROR_0xbdc40001.getTips());
+        }
+        TbPedigreeTree _tree = new TbPedigreeTree();
+        BeanUtils.copyProperties(inVo, _tree);
+        _tree.setRoutePath(tree.getRoutePath() + "@" + CommonUtils.getShortId());
+        _tree.setLayer(tree.getLayer() + 1);
+        _tree.setCreateTime(CommonConstants.format.format(new Date()));
+        _tree.setUpdateTime(CommonConstants.format.format(new Date()));
+        _tree.setIsDelete(CommonConstants.Delete.NO);
+        tbPedigreeTreeMapper.addPedigreeTree(_tree);
     }
 
     /**
@@ -135,7 +156,7 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
         if(tbPedigreeTree == null){
             throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc40001.getCode(),ErrorCodeEnum.ERROR_0xbdc40001.getTips());
         }
-        recursion(startUser, tbPedigreeTree.getLayer(), tbPedigreeTree.getId());
+        recursion(startUser, tbPedigreeTree.getLayer(), tbPedigreeTree.getId(), tbPedigreeTree.getRoutePath());
     }
 
     /**
@@ -195,25 +216,63 @@ public class TbPedigreeServiceImpl implements TbPedigreeService {
     }
 
     /**
+     * 查询所有同代人
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<NodeOutVo> findCogenerations(String userId) {
+        TbPedigreeTree tbPedigreeTree = tbPedigreeTreeMapper.findByUserId(userId);
+        if(tbPedigreeTree == null){
+            throw new DescribeException(ErrorCodeEnum.ERROR_0xbdc40001.getCode(),ErrorCodeEnum.ERROR_0xbdc40001.getTips());
+        }
+        List<NodeOutVo> outVos = Lists.newArrayList();
+        int index = tbPedigreeTree.getRoutePath().indexOf("@");
+        if(index <= 0){
+            NodeOutVo outVo = new NodeOutVo();
+            BeanUtils.copyProperties(tbPedigreeTree, outVo);
+            TbUser tbUser = tbUserMapper.findById(tbPedigreeTree.getUserId());
+            BeanUtils.copyProperties(tbUser, outVo);
+            outVos.add(outVo);
+            return outVos;
+        }
+        String routePath = tbPedigreeTree.getRoutePath().substring(0,tbPedigreeTree.getRoutePath().indexOf("@"));
+        List<TbPedigreeTree> trees = tbPedigreeTreeMapper.findCogenerations(routePath,
+                tbPedigreeTree.getLayer(),tbPedigreeTree.getCountryId());
+        if(trees != null && trees.size() > 0){
+            trees.forEach((tree) -> {
+                NodeOutVo outVo = new NodeOutVo();
+                BeanUtils.copyProperties(tree, outVo);
+                TbUser tbUser = tbUserMapper.findById(tree.getUserId());
+                BeanUtils.copyProperties(tbUser, outVo);
+                outVos.add(outVo);
+            });
+        }
+        return outVos;
+    }
+
+    /**
      * 递归修改节点层级数据
      * @param startUser
      * @param layer
      */
-    private void recursion(String startUser, int layer, String parentId){
+    private void recursion(String startUser, int layer, String parentId, String routePath){
         TbPedigreeTree tbPedigreeTree = tbPedigreeTreeMapper.findByUserId(startUser);
         if(tbPedigreeTree == null){
             return;
         }
+        layer = layer + 1;
         tbPedigreeTree.setLayer(layer);
         if(!StringUtils.isEmpty(parentId)) {
             tbPedigreeTree.setParentId(parentId);
         }
+        tbPedigreeTree.setRoutePath(routePath + "@" + tbPedigreeTree.getRoutePath());
         tbPedigreeTreeMapper.updatePedigreeTree(tbPedigreeTree);
         List<TbPedigreeTree> treeList = tbPedigreeTreeMapper.findByParentId(tbPedigreeTree.getId());
         if(treeList != null && treeList.size() > 0){
-            treeList.forEach((tree) -> {
-                recursion(tree.getUserId(), tree.getLayer() + 1, tree.getId());
-            });
+            for(TbPedigreeTree tree : treeList) {
+                recursion(tree.getUserId(), layer, tree.getId(), routePath);
+            }
         }
     }
 }

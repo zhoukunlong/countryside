@@ -35,11 +35,6 @@ public class TbPedigreeTree implements Serializable {
     private String parentId;
 
     /**
-     * 关联族谱id
-     */
-    private String pedigreeId;
-
-    /**
      * 创建时间
      */
     private String createTime;
@@ -50,11 +45,6 @@ public class TbPedigreeTree implements Serializable {
     private String updateTime;
 
     /**
-     * 配偶id
-     */
-    private String wifeId;
-
-    /**
      * 是否删除标识 0：否 1：是
      */
     private Integer isDelete;
@@ -63,4 +53,9 @@ public class TbPedigreeTree implements Serializable {
      * 层级从0开始
      */
     private Integer layer;
+
+    /**
+     * 树路径
+     */
+    private String routePath;
 }

@@ -20,33 +20,33 @@ public class CountryInVo {
     /**
      * 村庄名称
      */
-    @ApiModelProperty(value = "村庄名称", required = true, example = "")
+    @ApiModelProperty(value = "村庄名称", required = true, example = "XXX村庄")
     @NotBlank(message = "村庄名称不能为空")
     private String countryName;
 
     /**
      * 分组id
      */
-    @ApiModelProperty(value = "村庄所属分组id", required = true, example = "")
+    @ApiModelProperty(value = "村庄所属分组id", required = true, example = "123123")
     @NotBlank(message = "所属镇不能为空")
     private String groupId;
 
     /**
      * 村庄描述
      */
-    @ApiModelProperty(value = "村庄的详细描述", required = false, example = "")
+    @ApiModelProperty(value = "村庄的详细描述", required = false, example = "xxxx")
     private String countryDesc;
 
     /**
      * 村庄年龄
      */
-    @ApiModelProperty(value = "村庄年龄", required = false, example = "")
+    @ApiModelProperty(value = "村庄年龄", required = false, example = "100")
     private Integer countryAge;
 
     /**
      * 过期时间
      */
-    @ApiModelProperty(value = "过期时间", required = true, example = "")
+    @ApiModelProperty(value = "过期时间", required = true, example = "20230101")
     @NotBlank(message = "过期时间不能为空")
     private String expireTime;
 

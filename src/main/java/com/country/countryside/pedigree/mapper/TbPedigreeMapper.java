@@ -3,6 +3,8 @@ package com.country.countryside.pedigree.mapper;
 import com.country.countryside.pedigree.bean.TbPedigree;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  *
  * @author zhoukunlong
@@ -95,4 +97,14 @@ public interface TbPedigreeMapper {
      */
     @Update("update tb_pedigree set start_index = #{startIndex} where id = #{id}")
     void updateStartIndex(String id, String startIndex);
+
+    /**
+     * 根据名称查询族谱信息，做重名校验
+     * @param name
+     * @param countryId
+     * @return
+     */
+    @Select("select * from tb_pedigree where pedigree_name = #{name} and country_id = #{countryId} and is_delete = 0")
+    @ResultMap(value = "tbPedigree")
+    List<TbPedigree> findByName(String name, String countryId);
 }

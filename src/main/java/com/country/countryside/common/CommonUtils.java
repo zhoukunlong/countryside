@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 
 /**
  * 公共工具类
@@ -75,5 +76,18 @@ public class CommonUtils {
             return null;
         }
         return jwtPayload.getUserName();
+    }
+
+    /**
+     * 获取短id
+     * @return
+     */
+    public static String getShortId(){
+        StringBuilder stringBuilder = new StringBuilder();
+        Long time = System.currentTimeMillis();
+        stringBuilder.append(time);
+        Random random = new Random();
+        stringBuilder.append(random.nextInt(9));
+        return stringBuilder.toString();
     }
 }
